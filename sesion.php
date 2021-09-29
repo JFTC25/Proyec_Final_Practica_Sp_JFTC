@@ -12,8 +12,8 @@ $pass = $_POST['pass'];
         $consulta=mysqli_query($conn,$sql);
         $array=mysqli_fetch_array($consulta);
         if($array['contar'] > 0){
-            $_SESSION['usuario']=$user;
-            header("Location:inicio.php");
+            $_SESSION['correo']=$correo;
+            header("Location:home.php");
         }else{
        header("Location:index.php?estado=2");
     }
