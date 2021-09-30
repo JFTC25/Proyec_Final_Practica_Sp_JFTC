@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="favicon.ico">
-  <title>Iniciar Sesion</title>
+  <title>Iniciar Sesión</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="css/simplebar.css">
   <!-- Fonts CSS -->
