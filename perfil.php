@@ -1,4 +1,9 @@
 <?php
+include("conexionbd.php");
+$id = $_GET["id"];
+$datos = "SELECT * FROM usuario WHERE id = '$id' ";
+
+
 session_start();
 $correo = $_SESSION['correo'];
 if (!isset($correo)) {
@@ -36,6 +41,9 @@ if (!isset($correo)) {
                 <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
                     <i class="fe fe-menu navbar-toggler-icon"></i>
                 </button>
+                <form class="form-inline mr-auto searchform text-muted" action="busqueda.php" method="POST">
+                    <input name="buscar" class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="text" placeholder="Buscar..." aria-label="Search">
+                </form>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="dark">
@@ -50,8 +58,9 @@ if (!isset($correo)) {
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#"><?php echo $correo;} ?></a>
-                    </div>
+                            <a class="dropdown-item" href="#"><?php echo $correo;
+                                                            } ?></a>
+                        </div>
                     </li>
                 </ul>
             </nav>
@@ -113,29 +122,43 @@ if (!isset($correo)) {
                 </ul>
                 <div class="my-4">
                     <div class="card-body">
-                        <h5 class="card-title">Perfil</h5>
-                        <p class="card-text">Datos del usuario</p>
-                        <table class="table table-striped table-hover">
-                            <tbody>  
-                                <tr>
-                                    <th scope="row" rowspan="4"><img src="assets/images/ses.png" class="img-fluid" alt="..."></th>
-                                </tr>
-                                <tr>
-                                    <th>Usuario</th>
-                                    <th>ss</th>
-                                </tr>
-                                <tr>
-                                    <td>Correo</td>
-                                    <td>sssssssssssssssssssssssssssssssss</td>
-                                    
-                                </tr>
-                                <tr>
-                                    <td>Contraseña</td>
-                                    <td>ss</td>
-                                    
-                                </tr>
-                            </tbody>
-                        </table>
+                        <?php $resultado = mysqli_query($conn, $datos);
+                        while ($row = mysqli_fetch_assoc($resultado)) {  ?>
+                            <h5 class="card-title">Perfil</h5>
+                            <p class="card-text">Datos del usuario</p>
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" rowspan="4"><img src="assets/images/ses.png" class="img-fluid" alt="..."></th>
+                                    </tr>
+                                    <tr>
+                                        <th>Usuario:</th>
+                                        <th><?php echo $row["usuario"]; ?></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Correo:</td>
+                                        <td><?php echo $row["correo"]; ?></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Contraseña:</td>
+                                        <td><?php echo $row["pass"]; ?><br> (Contraseña Encriptada)</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?php
+                                            $te = "SELECT * FROM usuario WHERE correo= '$correo'";
+                                            $pol = mysqli_query($conn, $te);
+                                            while ($re = mysqli_fetch_assoc($pol)) {
+                                                echo "<a href='repass.php?id=" . $re['id'] . "'><button class='btn btn-primary btn-round waves-effect waves-light'>Cambiar Contraseña</button></a>";
+                                            } ?></td>
+                                        <td colspan="2"><a href="salir.php"><button type="submit" class="btn btn-info btn-round waves-effect waves-light">Cerrar Sesion</button></a></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

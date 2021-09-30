@@ -1,4 +1,6 @@
 <?php
+include("conexionbd.php");
+
 session_start();
 $correo = $_SESSION['correo'];
 if (!isset($correo)) {
@@ -36,6 +38,9 @@ if (!isset($correo)) {
                 <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
                     <i class="fe fe-menu navbar-toggler-icon"></i>
                 </button>
+                <form class="form-inline mr-auto searchform text-muted" action="busqueda.php" method="POST">
+                    <input name="buscar" class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="text" placeholder="Buscar..." aria-label="Search">
+                </form>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="dark">
@@ -52,7 +57,11 @@ if (!isset($correo)) {
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#"><?php echo $correo;
                                                             } ?></a>
-                            <a class="dropdown-item" href="perfil.php">Mi perfil</a>
+                            <?php $dato = "SELECT * FROM usuario WHERE correo= '$correo'";
+                            $pp = mysqli_query($conn, $dato);
+                            while ($row = mysqli_fetch_assoc($pp)) {
+                                echo "<a class='dropdown-item' href='perfil.php?id=" . $row['id'] . "'>Mi perfil</a>";
+                            } ?>
                             <a class="dropdown-item" href="salir.php">Salir</a>
                         </div>
                     </li>
@@ -109,9 +118,6 @@ if (!isset($correo)) {
                 <ul class="nav justify-content-end">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="home.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="perfil.php">Perfil</a>
                     </li>
                 </ul>
                 <div class="my-4">

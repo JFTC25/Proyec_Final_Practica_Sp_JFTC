@@ -1,5 +1,7 @@
 <?php
 include("conexionbd.php");
+$id = $_GET["id"];
+$producto = "SELECT * FROM producto WHERE id = '$id' ";
 
 session_start();
 $correo = $_SESSION['correo'];
@@ -7,6 +9,7 @@ if (!isset($correo)) {
     header("Location:index.php?estado=3");
 } else {
 ?>
+
     <!DOCTYPE html>
     <html lang="en">
 
@@ -16,7 +19,7 @@ if (!isset($correo)) {
         <meta name="description" content="" />
         <meta name="author" content="" />
         <link rel="icon" href="favicon.ico" />
-        <title>Factura</title>
+        <title>Producto</title>
         <!-- Simple bar CSS -->
         <link rel="stylesheet" href="css/simplebar.css" />
         <!-- Fonts CSS -->
@@ -57,11 +60,7 @@ if (!isset($correo)) {
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#"><?php echo $correo;
                                                             } ?></a>
-                            <?php $dato = "SELECT * FROM usuario WHERE correo= '$correo'";
-                            $pp = mysqli_query($conn, $dato);
-                            while ($row = mysqli_fetch_assoc($pp)) {
-                                echo "<a class='dropdown-item' href='perfil.php?id=" . $row['id'] . "'>Mi perfil</a>";
-                            } ?>
+                            <a class="dropdown-item" href="perfil.php">Mi perfil</a>
                             <a class="dropdown-item" href="salir.php">Salir</a>
                         </div>
                     </li>
@@ -79,7 +78,7 @@ if (!isset($correo)) {
                                 <img src="assets/images/wolf.png" alt="logo.png" class="navbar-brand-img brand-md" />
                                 <h6>Wolf</h6>
                             </div>
-                        </a>
+                        </a><br>
                     </div>
                     <p class="text-muted nav-heading mt-4 mb-1">
                         <span>Opciones</span>
@@ -93,7 +92,7 @@ if (!isset($correo)) {
                             </a>
                             <ul class="collapse list-unstyled pl-4 w-100" id="ui-elements">
                                 <li class="nav-item">
-                                    <a class="nav-link pl-3" href="producto.php"><span class="ml-1 item-text">- Producto</span></a>
+                                    <a class="nav-link pl-3" href="factura.php"><span class="ml-1 item-text">- Factura</span></a>
                                 </li>
 
                             </ul>
@@ -120,59 +119,59 @@ if (!isset($correo)) {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="home.php">Inicio</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil.php">Perfil</a>
+                    </li>
                 </ul>
                 <div class="my-4">
-                    <h1>Generar Factura</h1><br>
+                    <h1>Editar Producto</h1><br>
                     <div class="row">
-                        <form action="">
-                            <div class="col-md-12">
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Fecha:</label>
-                                            <input type="date" name="fecha" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
+                        <?php $resultado = mysqli_query($conn, $producto);
+                        while ($row = mysqli_fetch_assoc($resultado)) {  ?>
+                            <form action="edit.php" method="POST">
+                                <div class="col-md-12">
+                                    <div class="form-group mb-3">
+                                        <label for="simpleinput">ID</label>
+                                        <input type="text" name="id" value="<?php echo $row["id"]; ?>" class="form-control" readonly>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">NIT:</label>
-                                            <input type="text" name="nit" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
+                                    <div class="form-group mb-3">
+                                        <label for="simpleinput">Producto:</label>
+                                        <input type="text" name="pro" value="<?php echo $row["producto"]; ?>" class="form-control" required>
                                     </div>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Cliente:</label>
-                                    <input type="text" name="cliente" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Direccion:</label>
-                                    <input type="text" name="direc" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Descripcion</label>
-                                    <textarea class="form-control" name="desc" rows="4" required></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Precio:</label>
-                                            <input type="number" name="precio" class="form-control" required>
-                                        </div>
+                                    <div class="form-group mb-3">
+                                        <label for="simpleinput">Descripcion</label>
+                                        <input type="text" class="form-control" value="<?php echo $row["descripcion"]; ?>" name="des" rows="4" required></input>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Cantidad:</label>
-                                            <input type="number" name="cantidad" class="form-control" required>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="simpleinput">Precio:</label>
+                                                <input type="number" name="pre" value="<?php echo $row["precio"]; ?>" class="form-control" required>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div><br>
-                                <button type="submit" class="col-md-12 btn mb-2 btn-primary">Generar</button>
-                            </div> <!-- /.col -->
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="simpleinput">Cantidad:</label>
+                                                <input type="number" name="can" value="<?php echo $row["cantidad"]; ?>" class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <button type="submit" onclick="return editpro()" class="col-md-12 btn mb-2 btn-primary">Registrar</button>
+                                </div> <!-- /.col -->
                     </div>
-                    </form>
+                    </form><?php } ?>
                 </div>
             </div>
+            <script>
+                function editpro() {
+                    var respuesta = confirm("Desea Modificar el Registro?");
+                    if (respuesta == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            </script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
             <script src="js/jquery.min.js"></script>
             <script src="js/popper.min.js"></script>

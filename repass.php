@@ -1,5 +1,8 @@
 <?php
 include("conexionbd.php");
+$id = $_GET["id"];
+$datos = "SELECT * FROM usuario WHERE id = '$id' ";
+
 
 session_start();
 $correo = $_SESSION['correo'];
@@ -16,7 +19,7 @@ if (!isset($correo)) {
         <meta name="description" content="" />
         <meta name="author" content="" />
         <link rel="icon" href="favicon.ico" />
-        <title>Factura</title>
+        <title>Perfil</title>
         <!-- Simple bar CSS -->
         <link rel="stylesheet" href="css/simplebar.css" />
         <!-- Fonts CSS -->
@@ -57,12 +60,6 @@ if (!isset($correo)) {
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#"><?php echo $correo;
                                                             } ?></a>
-                            <?php $dato = "SELECT * FROM usuario WHERE correo= '$correo'";
-                            $pp = mysqli_query($conn, $dato);
-                            while ($row = mysqli_fetch_assoc($pp)) {
-                                echo "<a class='dropdown-item' href='perfil.php?id=" . $row['id'] . "'>Mi perfil</a>";
-                            } ?>
-                            <a class="dropdown-item" href="salir.php">Salir</a>
                         </div>
                     </li>
                 </ul>
@@ -95,7 +92,9 @@ if (!isset($correo)) {
                                 <li class="nav-item">
                                     <a class="nav-link pl-3" href="producto.php"><span class="ml-1 item-text">- Producto</span></a>
                                 </li>
-
+                                <li class="nav-item">
+                                    <a class="nav-link pl-3" href="factura.php"><span class="ml-1 item-text">- Factura</span></a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -122,55 +121,37 @@ if (!isset($correo)) {
                     </li>
                 </ul>
                 <div class="my-4">
-                    <h1>Generar Factura</h1><br>
-                    <div class="row">
-                        <form action="">
-                            <div class="col-md-12">
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Fecha:</label>
-                                            <input type="date" name="fecha" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">NIT:</label>
-                                            <input type="text" name="nit" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="card-body">
+                        <?php $resultado = mysqli_query($conn, $datos);
+                        while ($row = mysqli_fetch_assoc($resultado)) {  ?>
+                            <h5 class="card-title">Perfil</h5>
+                            <p class="card-text">Datos del usuario</p>
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                    <form action="recuperar.php" method="POST">
+                                        <tr class="table-info">
+                                            <th scope="row" rowspan="3"> <img class="img-fluid" src="assets/images/ses.png"></th>
+                                            <input type="text" class="form-control" name="id" readonly value="<?php echo  $row["id"]; ?>"><br>
+                                        </tr>
+                                        <tr class="table-secondary-regular">
 
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Cliente:</label>
-                                    <input type="text" name="cliente" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Direccion:</label>
-                                    <input type="text" name="direc" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Descripcion</label>
-                                    <textarea class="form-control" name="desc" rows="4" required></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Precio:</label>
-                                            <input type="number" name="precio" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Cantidad:</label>
-                                            <input type="number" name="cantidad" class="form-control" required>
-                                        </div>
-                                    </div>
-                                </div><br>
-                                <button type="submit" class="col-md-12 btn mb-2 btn-primary">Generar</button>
-                            </div> <!-- /.col -->
+                                            <td class="text-white">Nueva Contraseña: <br><input type="password" name="pass1" class="form-control " required></td>
+                                            
+                                        </tr>
+                                        <tr class="table-secondary-regular">
+                                            <td class="text-white">Confirmar Nueva Contraseña: <br><input type="password" name="pass2" class="form-control" required></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-center">
+                                                <button type='submit' class='btn btn-info btn-round waves-effect waves-light'>Confirmar</button></a>
+
+
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                        <?php } ?>
                     </div>
-                    </form>
                 </div>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>

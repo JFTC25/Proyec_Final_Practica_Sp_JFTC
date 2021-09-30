@@ -16,7 +16,7 @@ if (!isset($correo)) {
         <meta name="description" content="" />
         <meta name="author" content="" />
         <link rel="icon" href="favicon.ico" />
-        <title>Factura</title>
+        <title>Producto</title>
         <!-- Simple bar CSS -->
         <link rel="stylesheet" href="css/simplebar.css" />
         <!-- Fonts CSS -->
@@ -38,8 +38,8 @@ if (!isset($correo)) {
                 <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
                     <i class="fe fe-menu navbar-toggler-icon"></i>
                 </button>
-                <form class="form-inline mr-auto searchform text-muted" action="busqueda.php" method="POST">
-                    <input name="buscar" class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="text" placeholder="Buscar..." aria-label="Search">
+                <form class="form-inline mr-auto searchform text-muted" action="buscar.php" method="POST">
+                    <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Buscar..." aria-label="Search">
                 </form>
                 <ul class="nav">
                     <li class="nav-item">
@@ -95,7 +95,9 @@ if (!isset($correo)) {
                                 <li class="nav-item">
                                     <a class="nav-link pl-3" href="producto.php"><span class="ml-1 item-text">- Producto</span></a>
                                 </li>
-
+                                <li class="nav-item">
+                                    <a class="nav-link pl-3" href="factura.php"><span class="ml-1 item-text">- Factura</span></a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -105,7 +107,7 @@ if (!isset($correo)) {
                             </a>
                             <ul class="collapse list-unstyled pl-4 w-100" id="forms">
                                 <li class="nav-item">
-                                    <a class="nav-link pl-3" href="verpro.php"><span class="ml-1 item-text">- Producto</span></a>
+                                    <a class="nav-link pl-3" href="verfac.php"><span class="ml-1 item-text">- Producto</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link pl-3" href="verfac.php"><span class="ml-1 item-text">- Factura</span></a>
@@ -122,57 +124,107 @@ if (!isset($correo)) {
                     </li>
                 </ul>
                 <div class="my-4">
-                    <h1>Generar Factura</h1><br>
-                    <div class="row">
-                        <form action="">
-                            <div class="col-md-12">
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Fecha:</label>
-                                            <input type="date" name="fecha" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">NIT:</label>
-                                            <input type="text" name="nit" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Productos</h5>
+                        <p class="card-text">Listado de productos disponibles</p>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Producto</th>
+                                    <th>Descripcion</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                //Establecer la conexion a la base de dat
 
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Cliente:</label>
-                                    <input type="text" name="cliente" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Direccion:</label>
-                                    <input type="text" name="direc" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="simpleinput">Descripcion</label>
-                                    <textarea class="form-control" name="desc" rows="4" required></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Precio:</label>
-                                            <input type="number" name="precio" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Cantidad:</label>
-                                            <input type="number" name="cantidad" class="form-control" required>
-                                        </div>
-                                    </div>
-                                </div><br>
-                                <button type="submit" class="col-md-12 btn mb-2 btn-primary">Generar</button>
-                            </div> <!-- /.col -->
+                                include("buscar.php");
+                                while ($row = mysqli_fetch_assoc($ver1)) {
+                                    echo "<tr class='table-dark-white'>";
+                                    echo "<td>" . $row["id"] . "</td>";
+                                    echo "<td>" . $row["producto"] . "</td>";
+                                    echo "<td>" . $row["descripcion"] . "...</td>";
+                                    echo "<td class='text-center'> Q " . $row["precio"] . "</td>";
+                                    echo "<td class='text-center'>" . $row["cantidad"] . "</td>";
+                                    echo "<td><div class='dropdown'>
+                                                                    <button class='btn btn-sm dropdown-toggle' type='button' id='dr1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                                                        <span class='text-muted sr-only'>Opciones</span>
+                                                                    </button>
+                                                                    <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dr1'>
+                                                                        <a class='dropdown-item' href='editpro.php?id=" . $row['id'] . "'><i class='fe fe-edit-2 fe-16'></i> Editar</a>
+                                                                        <a class='dropdown-item' href='delepro.php?id=" . $row['id'] . "' onclick='return delpro()'><i class='fe fe-trash-2 fe-16'></i> Eliminar</a>
+                                                                    </div>
+                                                                    </td>";
+                                } ?>
+                            </tbody>
+                        </table>
+
                     </div>
-                    </form>
+                    <div class="card-body">
+                        <h5 class="card-title">Facturas</h5>
+                        <p class="card-text">Listado de facturas generadas</p>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Producto</th>
+                                    <th>Descripcion</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                //Establecer la conexion a la base de dat
+
+                                include("buscar.php");
+                                while ($ro = mysqli_fetch_assoc($ver2)) {
+                                    echo "<tr class='table-dark-white'>";
+                                    echo "<td>" . $ro["id"] . "</td>";
+                                    echo "<td>" . $ro["producto"] . "</td>";
+                                    echo "<td>" . $ro["descripcion"] . "...</td>";
+                                    echo "<td class='text-center'> Q " . $ro["precio"] . "</td>";
+                                    echo "<td class='text-center'>" . $ro["cantidad"] . "</td>";
+                                    echo "<td><div class='dropdown'>
+                                                                    <button class='btn btn-sm dropdown-toggle' type='button' id='dr1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                                                        <span class='text-muted sr-only'>Opciones</span>
+                                                                    </button>
+                                                                    <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dr1'>
+                                                                        <a class='dropdown-item' href='imprimir.php?id=" . $ro['id'] . "'><i class='fe fe-edit-2 fe-16'></i> Editar</a>
+                                                                        <a class='dropdown-item' href='delefac.php?id=" . $ro['id'] . "' onclick='return delfac()'><i class='fe fe-printer fe-16'></i> Eliminar</a>
+                                                                    </div>
+                                                                    </td>";
+                                } ?>
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
             </div>
+            <script>
+                function delpro() {
+                    var respuesta = confirm("Esta seguro de Eliminar este registro?");
+                    if (respuesta == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
+                function delfac() {
+                    var respuesta = confirm("Esta seguro de Eliminar este registro?");
+                    if (respuesta == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            </script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
             <script src="js/jquery.min.js"></script>
             <script src="js/popper.min.js"></script>
