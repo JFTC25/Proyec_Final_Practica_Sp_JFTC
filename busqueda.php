@@ -171,10 +171,9 @@ if (!isset($correo)) {
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Producto</th>
-                                    <th>Descripcion</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
+                                    <th>NIT</th>
+                                    <th>Cliente</th>
+                                    <th>Direccion</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -186,16 +185,15 @@ if (!isset($correo)) {
                                 while ($ro = mysqli_fetch_assoc($ver2)) {
                                     echo "<tr class='table-dark-white'>";
                                     echo "<td>" . $ro["id"] . "</td>";
-                                    echo "<td>" . $ro["producto"] . "</td>";
-                                    echo "<td>" . $ro["descripcion"] . "...</td>";
-                                    echo "<td class='text-center'> Q " . $ro["precio"] . "</td>";
-                                    echo "<td class='text-center'>" . $ro["cantidad"] . "</td>";
+                                    echo "<td>" . $row["nit"] . "</td>";
+                                    echo "<td>" . $row["cliente"] . "</td>";
+                                    echo "<td>" . $row["direccion"] . "</td>";
                                     echo "<td><div class='dropdown'>
                                                                     <button class='btn btn-sm dropdown-toggle' type='button' id='dr1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                                                         <span class='text-muted sr-only'>Opciones</span>
                                                                     </button>
                                                                     <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dr1'>
-                                                                        <a class='dropdown-item' href='imprimir.php?id=" . $ro['id'] . "'><i class='fe fe-edit-2 fe-16'></i> Editar</a>
+                                                                        <a class='dropdown-item' href='imprifac.php?id=" . $ro['id'] . "'><i class='fe fe-printer fe-16'></i> Editar</a>
                                                                         <a class='dropdown-item' href='delefac.php?id=" . $ro['id'] . "' onclick='return delfac()'><i class='fe fe-printer fe-16'></i> Eliminar</a>
                                                                     </div>
                                                                     </td>";

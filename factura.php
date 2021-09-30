@@ -124,15 +124,9 @@ if (!isset($correo)) {
                 <div class="my-4">
                     <h1>Generar Factura</h1><br>
                     <div class="row">
-                        <form action="">
+                        <form action="refac.php" method="$_POST">
                             <div class="col-md-12">
                                 <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Fecha:</label>
-                                            <input type="date" name="fecha" class="form-control drgpicker" id="date-input1" aria-describedby="button-addon2" required>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label for="simpleinput">NIT:</label>
@@ -151,23 +145,45 @@ if (!isset($correo)) {
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="simpleinput">Descripcion</label>
-                                    <textarea class="form-control" name="desc" rows="4" required></textarea>
+                                    <div class="my-4">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Producto</th>
+                                    <th>Descripcion</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>   
+                                <?php
+                               //Establecer la conexion a la base de dat
+
+                                $producto = "SELECT * FROM producto";
+                                $resultado = mysqli_query($conn, $producto);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<tr class='table-dark-white'>";
+                                    echo "<td>" . $row["id"] . "<br><input type='checkbox' name='pro' id=''></td>";
+                                    echo "<td>" . $row["producto"] . "</td>";
+                                    echo "<td>" . $row["descripcion"] . "...</td>";
+                                    echo "<td class='text-center'> Q " . $row["precio"] . "</td>";
+                                } ?>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group mb-3">
-                                            <label for="simpleinput">Precio:</label>
-                                            <input type="number" name="precio" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="simpleinput">Cantidad:</label>
-                                            <input type="number" name="cantidad" class="form-control" required>
+                                            <label for="simpleinput">total:</label>
+                                           <input type="number" name="total" class="form-control">
                                         </div>
                                     </div>
                                 </div><br>
-                                <button type="submit" class="col-md-12 btn mb-2 btn-primary">Generar</button>
+                                <button type="submit" class="col-md-12 btn mb-2 btn-primary">Registrar</button>
                             </div> <!-- /.col -->
                     </div>
                     </form>

@@ -128,32 +128,35 @@ if (!isset($correo)) {
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Cliente</th>
                                     <th>NIT</th>
-                                    <th>Dirección</th>
-                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Direccion</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>00</td>
-                                    <td>xxx</td>
-                                    <td>xxx</td>
-                                    <td>0000</td>
-                                    <td>00</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm dropdown-toggle" type="button" id="dr1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="text-muted sr-only">Opciones</span>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dr1">
-                                                <a class="dropdown-item" href="#">Editar</a>
-                                                <a class="dropdown-item" href="#">Eliminar</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <?php
+                                //Establecer la conexion a la base de dat
+
+                                $factura = "SELECT * FROM factura";
+                                $resultado = mysqli_query($conn, $factura);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<tr class='table-dark-white'>";
+                                    echo "<td>" . $row["id"] . "</td>";
+                                   // echo "<td>" . $row["fecha"] . "</td>";
+                                    echo "<td>" . $row["nit"] . "</td>";
+                                    echo "<td>" . $row["cliente"] . "</td>";
+                                    echo "<td>" . $row["direccion"] . "</td>";
+                                    echo "<td><div class='dropdown'>
+                                                                    <button class='btn btn-sm dropdown-toggle' type='button' id='dr1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                                                        <span class='text-muted sr-only'>Opciones</span>
+                                                                    </button>
+                                                                    <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dr1'>
+                                                                        <a class='dropdown-item' href='imprifac.php?id=" . $row['id'] . "'><i class='fe fe-printer fe-16'></i> Imprimir</a>
+                                                                        <a class='dropdown-item' href='delefac.php?id=" . $row['id'] . "' onclick='return delpro()'><i class='fe fe-trash-2 fe-16'></i> Eliminar</a>
+                                                                    </div>
+                                                                    </td>";
+                                } ?>
                             </tbody>
                         </table>
                     </div>
