@@ -185,9 +185,9 @@ if (!isset($correo)) {
                                 while ($ro = mysqli_fetch_assoc($ver2)) {
                                     echo "<tr class='table-dark-white'>";
                                     echo "<td>" . $ro["id"] . "</td>";
-                                    echo "<td>" . $row["nit"] . "</td>";
-                                    echo "<td>" . $row["cliente"] . "</td>";
-                                    echo "<td>" . $row["direccion"] . "</td>";
+                                    echo "<td>" . $ro["nit"] . "</td>";
+                                    echo "<td>" . $ro["cliente"] . "</td>";
+                                    echo "<td>" . $ro["direccion"] . "</td>";
                                     echo "<td><div class='dropdown'>
                                                                     <button class='btn btn-sm dropdown-toggle' type='button' id='dr1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                                                         <span class='text-muted sr-only'>Opciones</span>
